@@ -1,0 +1,26 @@
+<h2>wallet</h2>
+<dl>
+    <dt>balance</dt>
+    <dd>{{balance}} bsv</dd>
+</dl>
+<h3>utxo</h3>
+<table>
+    <tr>
+        <th>amount</th>
+        <th colspan="2">outpoint id</th>
+    </tr>
+    {{#each unspent}}
+    <tr>
+        <td>
+            {{amount}}
+        </td>
+        <td class="fixed">
+            {{txid}}
+        </td>
+        <td>
+            #{{vout}}
+        </td>
+    </tr>
+    {{/each}}
+</table>
+<p><a href="/">home</a></p>

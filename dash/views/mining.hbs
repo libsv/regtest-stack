@@ -1,0 +1,12 @@
+<h2>mining</h2>
+{{#if this.error}}
+  <p>{{error}}</p>
+{{else if result.length}}
+  <p>Mined blocks:</p>
+  <ul>
+  {{#each result}}
+    <li>{{this}}</li>
+  {{/each}}
+  </ul>
+{{/if}}
+<p><a href="/">home</a></p>

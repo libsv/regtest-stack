@@ -1,0 +1,101 @@
+body {
+    background-color: white;
+    color: black;
+    font-family: Ubuntu, Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+}
+
+header, main, footer {
+    margin: 1ch auto;
+    max-width: 100ch;
+}
+footer {
+    text-align: right;
+    margin-top: 5ch;
+    padding-top: 2ch;
+    padding-bottom: 2ch;
+    border-top: solid 1px #ccc;
+}
+
+a,
+a:visited {
+    color: navy;
+}
+
+a:hover,
+a:active {
+    color: red;
+}
+
+dl {
+    display: grid;
+    grid-template-columns: 200px auto;
+}
+
+dt {
+    grid-column: 1;
+    background-color: #eee;
+}
+
+dd {
+    grid-column: 2;
+    background-color: #edb;
+}
+
+dt,
+dd {
+    padding: 10px;
+    margin: 2px;
+}
+
+.fixed {
+    font-family: Ubuntu Mono, Lucida Sans Typewriter, Lucida Console, monaco, Bitstream Vera Sans Mono, monospace;
+}
+
+th {
+    background-color: #EAB300;
+    padding: 10px;
+    text-align: left
+}
+
+td {
+    padding: 2px 10px;
+}
+
+tr:nth-child(odd) td {
+    background-color: #eee;
+}
+
+h1, h2, h3, h4, h5, h6, dt {
+    color: #4D4D4D;;
+}
+
+table {
+    width: 100%;
+}
+
+header {
+    margin-bottom: 60px;
+}
+
+header h1 {
+    text-align: right;
+}
+ 
+header h1 a img {
+    margin-bottom: 1ch;
+}
+
+header h1 a,
+header h1 a:visited,
+header h1 a:hover,
+header h1 a:active {
+    border: none;
+    text-decoration: none;
+    color: #4D4D4D;
+}
+form.control {
+    display: inline-grid;
+}
+input#block-count {
+    width: 6ch;
+}

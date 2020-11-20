@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd "${0%/*}"
+
+# consider --no-cache 
+docker build --no-cache -t whatsonchain:latest .
