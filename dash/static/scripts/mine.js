@@ -1,5 +1,5 @@
 function mineBlock() {
-  return fetch('http://localhost:3000/api/mine', {
+  return fetch('http://localhost:3010/api/mine', {
     method: 'POST',
   }).then(response => response.json())
 }
