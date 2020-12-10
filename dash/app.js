@@ -2,6 +2,7 @@ const express = require('express');
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const cors = require('cors')
 
 const DASH_PORT = process.env.DASH_PORT || 3000;
 const sv = {
@@ -16,7 +17,10 @@ app.engine('.hbs', exphbs({
   defaultLayout: 'dash' 
 }));
 app.set('view engine', '.hbs');
-app.use(express.static('static'));
+app
+  .use(express.static('static'))
+  .use(cors())
+
 const formDataParser = bodyParser.urlencoded({ extended: false });
  
 app.get('/', async (req, res) => {

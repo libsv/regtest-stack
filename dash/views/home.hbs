@@ -30,6 +30,15 @@
     200 blocks
   </button>
 </form>
+
+<button id="mining-button">
+  <img src="/mining.svg" width="100" height="100" />
+  <br />
+  <span>Start mining</span>
+</button>
+<script src="/scripts/mine.js"></script>
+<script>window.init()</script>
+
 {{#if data.blocks}}
 <form method="POST" action="/reset" class="control">
   <button>
