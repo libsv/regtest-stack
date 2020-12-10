@@ -22,9 +22,25 @@ app
   .use(cors())
 
 const formDataParser = bodyParser.urlencoded({ extended: false });
- 
-app.get('/', async (req, res) => {
-  let infoResult = await axios.post(
+
+const mine = async blockCount => axios.post(
+  sv.url,
+  {
+    jsonrpc: "1.0",
+    id: "dash",
+    method: "generate",
+    params: [+blockCount]
+  },
+  {
+    auth: {
+      username: sv.user,
+      password: sv.pass
+    }
+  }
+).then(infoTip)
+
+const infoTip = () => Promise.all([
+  axios.post(
     sv.url,
     {
       jsonrpc: "1.0",
@@ -38,8 +54,7 @@ app.get('/', async (req, res) => {
         password: sv.pass
       }
     }
-  );
-  let tipResult = await axios.post(
+  ), axios.post(
     sv.url,
     {
       jsonrpc: "1.0",
@@ -53,36 +68,24 @@ app.get('/', async (req, res) => {
         password: sv.pass
       }
     }
-  );
+  )
+])
+
+app.get('/', async (req, res) => {
+  let [infoResult, tipResult] = await infoTip();
   res.render('home', {
     data: infoResult.data.result,
     tip: tipResult.data.result
   });
 });
 
-const mine = async blockCount => {
-  console.log('mining', blockCount, 'blocks');
-  return await axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "generate",
-      params: [+blockCount]
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  );
-};
-
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    await mine(req.body.number || 1);
-    res.sendStatus(201);
+    const [infoResult, tipResult] = await mine(req.body.number || 1)
+    res.status(201).json({
+      data: infoResult.data.result,
+      tip: tipResult.data.result
+    })
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

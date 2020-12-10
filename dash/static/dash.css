@@ -99,3 +99,7 @@ form.control {
 input#block-count {
     width: 6ch;
 }
+
+button {
+    cursor: pointer;
+}
