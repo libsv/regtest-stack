@@ -93,7 +93,8 @@ header h1 a:active {
     text-decoration: none;
     color: #4D4D4D;
 }
-form.control {
+
+.control {
     display: inline-grid;
 }
 input#block-count {
