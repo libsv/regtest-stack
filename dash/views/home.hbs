@@ -38,7 +38,7 @@
     <span>Start mining</span>
   </button>
   <script src="/scripts/mine.js"></script>
-  <script>window.init()</script>
+  <script>window.init(); const miningButton = document.getElementById('mining-button'); miningButton.click()</script>
 </div>
 
 {{#if data.blocks}}
