@@ -37,7 +37,9 @@ const mine = async blockCount => axios.post(
       password: sv.pass
     }
   }
-).then(infoTip)
+)
+
+const mineInfo = async blockCount => mine(blockCount).then(infoTip)
 
 const infoTip = () => Promise.all([
   axios.post(
@@ -81,7 +83,7 @@ app.get('/', async (req, res) => {
 
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    const [infoResult, tipResult] = await mine(req.body.number || 1)
+    const [infoResult, tipResult] = await mineInfo(req.body.number || 1)
     res.status(201).json({
       data: infoResult.data.result,
       tip: tipResult.data.result
