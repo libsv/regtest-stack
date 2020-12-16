@@ -1,3 +1,4 @@
+<script src="/scripts/mine.js"></script>
 <h2>chain info</h2>
 <dl>
   <dt>tip</dt>
@@ -14,14 +15,19 @@
 </dl>
 <h2>mining control</h2>
 <section>
-<form method="POST" action="/mine" class="control">
-  <input type="hidden" name="blocks" value="1" />
-  <button>
+<div class="control">
+  <button id="mine-1-button">
     <img src="/mining.svg" width="100" height="100" />
     <br />
     single block
   </button>
-</form>
+  <script>
+    const mine1Button = document.getElementById('mine-1-button');
+    mine1Button.onclick = async () => {
+      window.setInfoTip(await window.mineBlock())
+    }
+  </script>
+</div>
 <form method="POST" action="/mine" class="control">
   <input type="hidden" name="blocks" value="101" />
   <button>
@@ -37,7 +43,6 @@
     <br />
     <span>Start mining</span>
   </button>
-  <script src="/scripts/mine.js"></script>
   <script>window.init(); const miningButton = document.getElementById('mining-button'); miningButton.click()</script>
 </div>
 

@@ -9,3 +9,5 @@ module.exports.height = {
     result: '456'
   }
 }
+
+module.exports.mineResponse = ["1e2d5906fcabf5fd11ad77971c08e8f8b18be767d46a5be8b6c2302fe8706422"]
