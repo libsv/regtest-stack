@@ -5,7 +5,7 @@ const axios = require('axios');
 const cors = require('cors')
 
 const mine = require('./api/mine')
-const mineResponse = require('./api/mine-response')
+const mineChainInfo = require('./api/mine-chain-info')
 const chainInfo = require('./api/chain-info')
 
 const DASH_PORT = process.env.DASH_PORT || 3000;
@@ -33,7 +33,7 @@ app.get('/', async (_, res) => {
 
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    const [infoResult, tipResult] = await mineResponse(req.body.number || 1)
+    const [infoResult, tipResult] = await mineChainInfo(req.body.number || 1)
     res.status(201).json({
       data: infoResult.data.result,
       tip: tipResult.data.result
