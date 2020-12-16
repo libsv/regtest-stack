@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const cors = require('cors')
 
+const mine = require('./api/mine')
+const mineResponse = require('./api/mine-response')
+const chainInfo = require('./api/chain-info')
+
 const DASH_PORT = process.env.DASH_PORT || 3000;
-const sv = {
-  url: `http://${process.env.SV_HOST || 'localhost'}:${process.env.SV_PORT || 8332}`,
-  user: process.env.SV_USER || 'rpc',
-  pass: process.env.SV_PASSWORD || 'rpc'
-};
+const sv = require('./settings')
 
 const app = express();
 app.engine('.hbs', exphbs({ 
@@ -23,58 +23,8 @@ app
 
 const formDataParser = bodyParser.urlencoded({ extended: false });
 
-const mine = async blockCount => axios.post(
-  sv.url,
-  {
-    jsonrpc: "1.0",
-    id: "dash",
-    method: "generate",
-    params: [+blockCount]
-  },
-  {
-    auth: {
-      username: sv.user,
-      password: sv.pass
-    }
-  }
-)
-
-const mineInfo = async blockCount => mine(blockCount).then(infoTip)
-
-const infoTip = () => Promise.all([
-  axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "getinfo",
-      params: []
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  ), axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "getbestblockhash",
-      params: []
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  )
-])
-
-app.get('/', async (req, res) => {
-  let [infoResult, tipResult] = await infoTip();
+app.get('/', async (_, res) => {
+  let [infoResult, tipResult] = await chainInfo();
   res.render('home', {
     data: infoResult.data.result,
     tip: tipResult.data.result
@@ -83,7 +33,7 @@ app.get('/', async (req, res) => {
 
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    const [infoResult, tipResult] = await mineInfo(req.body.number || 1)
+    const [infoResult, tipResult] = await mineResponse(req.body.number || 1)
     res.status(201).json({
       data: infoResult.data.result,
       tip: tipResult.data.result
