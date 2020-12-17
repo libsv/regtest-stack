@@ -1,12 +1,14 @@
-function mineBlock() {
+function mineBlock(n) {
   return fetch('http://localhost:3010/api/mine', {
     method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ n: n || 2 })
   }).then(response => response.json())
 }
 
 function mine(updateDom) {
   return setInterval(async () => {
-    updateDom(await window.mineBlock())
+    updateDom(await window.mineBlock(1))
   }, 10 * 60 * 1000)
 }
 

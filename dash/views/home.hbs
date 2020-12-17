@@ -28,15 +28,27 @@
     }
   </script>
 </div>
-<form method="POST" action="/mine" class="control">
-  <input type="hidden" name="blocks" value="101" />
-  <button>
+<div class="control">
+  <button id="mine-many-button">
     <img src="/mining.svg" width="100" height="100" />
     <br />
-    {{!-- <input type="number" name="blocks" value="101" maxlength="4" id="block-count" /> --}}
     101 blocks
   </button>
-</form>
+    <script>
+      const mineMultipleButton = document.getElementById('mine-many-button');
+      mineMultipleButton.onclick = async () => {
+        result = await window.mineBlock(101)
+        if (result) {
+          const html = '<ul>' + result.map(r => `<li>${r}</li>`).join('') + '</ul>'
+          const overlay = document.getElementById('overlay')
+          const body = overlay.getElementsByClassName('body')
+          body[0].innerHTML = html
+          overlay.classList.add('visible')
+        }
+      }
+    </script>
+</div>
+
 <div class="control">
   <button id="mining-button">
     <img src="/mining.svg" width="100" height="100" />
@@ -56,3 +68,16 @@
 </form>
 {{/if}}
 </section>
+
+<div id="overlay">
+  <section class="container">
+    <div class="head">
+      <div class="close" onclick="
+        const box = document.getElementById('overlay');
+        box.classList.remove('visible');"></div>
+    </div>
+    <div class="body">
+
+    </div>
+  </section>
+</div>

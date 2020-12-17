@@ -21,7 +21,7 @@ app
   .use(express.static('static'))
   .use(cors())
 
-const formDataParser = bodyParser.urlencoded({ extended: false });
+const formDataParser = bodyParser.urlencoded({ extended: true });
 
 app.get('/', async (_, res) => {
   let [infoResult, tipResult] = await chainInfo();
@@ -33,11 +33,17 @@ app.get('/', async (_, res) => {
 
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    const [infoResult, tipResult] = await mineChainInfo(req.body.number || 1)
-    res.status(201).json({
-      data: infoResult.data.result,
-      tip: tipResult.data.result
-    })
+    const blockNumber = req.body.n || 1
+    if (blockNumber === 1) {
+      const [infoResult, tipResult] = await mineChainInfo(blockNumber)
+      res.status(201).json({
+        data: infoResult.data.result,
+        tip: tipResult.data.result
+      })
+    } else {
+      const result = await mine(blockNumber)
+      res.status(201).json(result.data.result)
+    }
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
