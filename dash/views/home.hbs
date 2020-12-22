@@ -1,9 +1,10 @@
+<script src="/scripts/mine.js"></script>
 <h2>chain info</h2>
 <dl>
   <dt>tip</dt>
-  <dd>{{tip}}</dd>
+  <dd id="tip">{{tip}}</dd>
   <dt>height</dt>
-  <dd>{{data.blocks}}</dd>
+  <dd id="height">{{data.blocks}}</dd>
 </dl>
 <h2>wallet</h2>
 <dl>
@@ -13,23 +14,50 @@
   <dd><a href="/wallet">wallet details</a></dd>
 </dl>
 <h2>mining control</h2>
-<form method="POST" action="/mine" class="control">
-  <input type="hidden" name="blocks" value="1" />
-  <button>
+<section>
+<div class="control">
+  <button id="mine-1-button">
     <img src="/mining.svg" width="100" height="100" />
     <br />
     single block
   </button>
-</form>
-<form method="POST" action="/mine" class="control">
-  <input type="hidden" name="blocks" value="200" />
-  <button>
+  <script>
+    const mine1Button = document.getElementById('mine-1-button');
+    mine1Button.onclick = async () => {
+      window.setInfoTip(await window.mineBlock())
+    }
+  </script>
+</div>
+<div class="control">
+  <button id="mine-many-button">
     <img src="/mining.svg" width="100" height="100" />
     <br />
-    {{!-- <input type="number" name="blocks" value="200" maxlength="4" id="block-count" /> --}}
-    200 blocks
+    101 blocks
   </button>
-</form>
+    <script>
+      const mineMultipleButton = document.getElementById('mine-many-button');
+      mineMultipleButton.onclick = async () => {
+        result = await window.mineBlock(101)
+        if (result) {
+          const html = '<ul>' + result.map(r => `<li>${r}</li>`).join('') + '</ul>'
+          const overlay = document.getElementById('overlay')
+          const body = overlay.getElementsByClassName('body')
+          body[0].innerHTML = html
+          overlay.classList.add('visible')
+        }
+      }
+    </script>
+</div>
+
+<div class="control">
+  <button id="mining-button">
+    <img src="/mining.svg" width="100" height="100" />
+    <br />
+    <span>Start mining</span>
+  </button>
+  <script>window.init(); const miningButton = document.getElementById('mining-button'); miningButton.click()</script>
+</div>
+
 {{#if data.blocks}}
 <form method="POST" action="/reset" class="control">
   <button>
@@ -39,3 +67,17 @@
   </button>
 </form>
 {{/if}}
+</section>
+
+<div id="overlay">
+  <section class="container">
+    <div class="head">
+      <div class="close" onclick="
+        const box = document.getElementById('overlay');
+        box.classList.remove('visible');"></div>
+    </div>
+    <div class="body">
+
+    </div>
+  </section>
+</div>

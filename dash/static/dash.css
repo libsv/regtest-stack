@@ -93,9 +93,65 @@ header h1 a:active {
     text-decoration: none;
     color: #4D4D4D;
 }
-form.control {
+
+.control {
     display: inline-grid;
 }
 input#block-count {
     width: 6ch;
+}
+
+button {
+    cursor: pointer;
+}
+
+#overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(70, 70, 70, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#overlay.visible {
+    display: block;
+}
+
+#overlay .container {
+    margin: 100px auto auto auto;
+    width: 675px;
+    background-color: white;
+    min-height: 500px;
+    border-radius: 13px;
+}
+
+#overlay .container .head {
+    background-color: grey;
+    border-radius: 10px 10px 0 0 ;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#overlay .container .head .close:before {
+    content: "x";
+}
+
+#overlay .container .head .close {
+    width: 20px;
+    height: 20px;
+    color: white;
+    border-radius: 10px;
+    background-color: black;
+    text-align: center;
+    cursor: pointer;
+}
+
+#overlay .container .body {
+    padding: 20px;
+    max-height: 600px;
+    overflow: hidden;
+    overflow-y: scroll;
 }

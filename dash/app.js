@@ -2,13 +2,14 @@ const express = require('express');
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const cors = require('cors')
+
+const mine = require('./api/mine')
+const mineChainInfo = require('./api/mine-chain-info')
+const chainInfo = require('./api/chain-info')
 
 const DASH_PORT = process.env.DASH_PORT || 3000;
-const sv = {
-  url: `http://${process.env.SV_HOST || 'localhost'}:${process.env.SV_PORT || 8332}`,
-  user: process.env.SV_USER || 'rpc',
-  pass: process.env.SV_PASSWORD || 'rpc'
-};
+const sv = require('./settings')
 
 const app = express();
 app.engine('.hbs', exphbs({ 
@@ -16,69 +17,33 @@ app.engine('.hbs', exphbs({
   defaultLayout: 'dash' 
 }));
 app.set('view engine', '.hbs');
-app.use(express.static('static'));
-const formDataParser = bodyParser.urlencoded({ extended: false });
- 
-app.get('/', async (req, res) => {
-  let infoResult = await axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "getinfo",
-      params: []
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  );
-  let tipResult = await axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "getbestblockhash",
-      params: []
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  );
+app
+  .use(express.static('static'))
+  .use(cors())
+
+const formDataParser = bodyParser.urlencoded({ extended: true });
+
+app.get('/', async (_, res) => {
+  let [infoResult, tipResult] = await chainInfo();
   res.render('home', {
     data: infoResult.data.result,
     tip: tipResult.data.result
   });
 });
 
-const mine = async blockCount => {
-  console.log('mining', blockCount, 'blocks');
-  return await axios.post(
-    sv.url,
-    {
-      jsonrpc: "1.0",
-      id: "dash",
-      method: "generate",
-      params: [+blockCount]
-    },
-    {
-      auth: {
-        username: sv.user,
-        password: sv.pass
-      }
-    }
-  );
-};
-
 app.post('/api/mine', bodyParser.json(), async (req, res) => {
   try {
-    await mine(req.body.number || 1);
-    res.sendStatus(201);
+    const blockNumber = req.body.n || 1
+    if (blockNumber === 1) {
+      const [infoResult, tipResult] = await mineChainInfo(blockNumber)
+      res.status(201).json({
+        data: infoResult.data.result,
+        tip: tipResult.data.result
+      })
+    } else {
+      const result = await mine(blockNumber)
+      res.status(201).json(result.data.result)
+    }
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
