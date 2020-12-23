@@ -55,8 +55,20 @@ services:
       - bitcoin_1_port=8332
       - bitcoin_1_username=rpc
       - bitcoin_1_password=rpc
+      - minerId_URL=http://host.docker.internal:9002/minerid
+      - minerId_alias=testMiner
     ports:
       - "9004:9004"
     restart: unless-stopped
+    depends_on:
+      - sv
+
+  minerid:
+    container_name: minerid
+    image: bitcoinsv/minerid:1.1.1
+    environment:
+      - NODE_CONFIG='{"bitcoin":{"rpcHost":"host.docker.internal"}}'
+    ports:
+      - "9002:9002"
     depends_on:
       - sv

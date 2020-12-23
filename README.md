@@ -47,3 +47,6 @@ The file `sv/bitcoin.conf` is volume-mounted into the SV Node container during `
 
 The [API reference](https://github.com/bitcoin-sv/merchantapi-reference) has more information as well as the [swagger documentation](https://bitcoin-sv.github.io/merchantapi-reference).
 
+### Miner ID
+
+[Miner ID reference](https://github.com/bitcoin-sv/minerid-reference) contains commands.
