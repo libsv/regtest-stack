@@ -2,43 +2,37 @@ version: '3'
 services:
 
   sv:
+    container_name: sv
     build:
       context: ./sv
       args:
         VERSION: "1.0.6"
-    networks:
-    - sv
-    # for debug only
-    - edge
     expose:
-    - "8332"
-    - "8333"
-    - "28332"
+      - "8332"
+      - "8333"
+      - "28332"
     ports:
-    # for debug only
-    - "8332:8332"
-    # for debug only
-    - "28332:28332"
+      - "8332:8332"
+      - "28332:28332"
     restart: unless-stopped
     volumes:
-    - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
+      - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
 
   explorer:
+    container_name: explorer
     build: ./explorer
-    networks:
-    - sv
-    - edge
     environment:
       PORT: "8080"
     expose:
-    - "8080"
+      - "8080"
     ports:
-    - "8080:8080"
+      - "8080:8080"
     restart: unless-stopped
     depends_on: 
-    - sv
+      - sv
 
   dash:
+    container_name: dash
     build: ./dash
     environment:
       DASH_PORT: 3000
@@ -46,36 +40,23 @@ services:
       SV_PORT: 8332
       SV_USER: rpc
       SV_PASSWORD: rpc
-    networks:
-    - sv
-    - edge
     ports:
-    - "3010:3000"
+      - "3010:3000"
     restart: unless-stopped
     depends_on:
-    - sv
+      - sv
 
   mapi:
+    container_name: mapi
     image: bitcoinsv/mapi:1.1.0
     environment:
       - httpAddress=:9004
-      - bitcoin_1_host= # todo
-      - bitcoin_1_port= # todo
+      - bitcoin_1_host=sv
+      - bitcoin_1_port=8332
       - bitcoin_1_username=rpc
       - bitcoin_1_password=rpc
-    networks:
-      - sv
-      - edge
     ports:
       - "9004:9004"
     restart: unless-stopped
     depends_on:
       - sv
-
-
-networks:
-  sv:
-    internal: true
-
-  edge:
-    driver: bridge
