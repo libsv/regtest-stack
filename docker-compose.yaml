@@ -55,6 +55,23 @@ services:
     depends_on:
     - sv
 
+  mapi:
+    image: bitcoinsv/mapi:1.1.0
+    environment:
+      - httpAddress=:9004
+      - bitcoin_1_host= # todo
+      - bitcoin_1_port= # todo
+      - bitcoin_1_username=rpc
+      - bitcoin_1_password=rpc
+    networks:
+      - sv
+      - edge
+    ports:
+      - "9004:9004"
+    restart: unless-stopped
+    depends_on:
+      - sv
+
 
 networks:
   sv:
