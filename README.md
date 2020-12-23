@@ -43,3 +43,7 @@ URL: `http://localhost:3010`
 
 The file `sv/bitcoin.conf` is volume-mounted into the SV Node container during `docker-compose up`. Modify it as required, then restart the node with `docker-compose down` and `docker-compose up`.
 
+### Merchant API
+
+The [API reference](https://github.com/bitcoin-sv/merchantapi-reference) has more information as well as the [swagger documentation](https://bitcoin-sv.github.io/merchantapi-reference).
+
