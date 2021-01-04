@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  sv:
-    container_name: sv
+  node1:
+    container_name: node1
     build:
       context: ./sv
       args:
@@ -31,7 +31,7 @@ services:
       - "8080:8080"
     restart: unless-stopped
     depends_on: 
-      - sv
+      - node1
     networks:
       - regtest_stack
 
@@ -40,7 +40,7 @@ services:
     build: ./dash
     environment:
       DASH_PORT: 3000
-      SV_HOST: sv
+      SV_HOST: node1
       SV_PORT: 18332
       SV_USER: rpc
       SV_PASSWORD: rpc
@@ -48,7 +48,7 @@ services:
       - "3010:3000"
     restart: unless-stopped
     depends_on:
-      - sv
+      - node1
     networks:
       - regtest_stack
 
@@ -57,7 +57,7 @@ services:
     image: bitcoinsv/mapi:1.1.0
     environment:
       - httpAddress=:9014
-      - bitcoin_1_host=sv
+      - bitcoin_1_host=node1
       - bitcoin_1_port=18332
       - bitcoin_1_username=rpc
       - bitcoin_1_password=rpc
@@ -67,7 +67,7 @@ services:
       - "9014"
     restart: unless-stopped
     depends_on:
-      - sv
+      - node1
     networks:
       - regtest_stack
 
@@ -79,7 +79,7 @@ services:
     ports:
       - "9012"
     depends_on:
-      - sv
+      - node1
     networks:
       - regtest_stack
 
