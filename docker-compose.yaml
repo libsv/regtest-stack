@@ -1,22 +1,24 @@
-version: '3'
-services:
+version: '3.8'
 
-  sv:
-    container_name: sv
+services:
+  node1:
+    container_name: node1
     build:
       context: ./sv
       args:
         VERSION: "1.0.6"
     expose:
-      - "8332"
-      - "8333"
+      - "18332"
+      - "18333"
       - "28332"
     ports:
-      - "8332:8332"
+      - "18332:18332"
       - "28332:28332"
     restart: unless-stopped
     volumes:
       - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
+    networks:
+      - regtest_stack
 
   explorer:
     container_name: explorer
@@ -29,46 +31,70 @@ services:
       - "8080:8080"
     restart: unless-stopped
     depends_on: 
-      - sv
+      - node1
+    networks:
+      - regtest_stack
 
   dash:
     container_name: dash
     build: ./dash
     environment:
       DASH_PORT: 3000
-      SV_HOST: sv
-      SV_PORT: 8332
-      SV_USER: rpc
-      SV_PASSWORD: rpc
+      SV_HOST: node1
+      SV_PORT: 18332
+      SV_USER: bitcoin
+      SV_PASSWORD: bitcoin
     ports:
       - "3010:3000"
     restart: unless-stopped
     depends_on:
-      - sv
+      - node1
+    networks:
+      - regtest_stack
 
   mapi:
     container_name: mapi
     image: bitcoinsv/mapi:1.1.0
     environment:
       - httpAddress=:9004
-      - bitcoin_1_host=sv
-      - bitcoin_1_port=8332
-      - bitcoin_1_username=rpc
-      - bitcoin_1_password=rpc
-      - minerId_URL=http://host.docker.internal:9002/minerid
+      - bitcoin_1_host=node1
+      - bitcoin_1_port=18332
+      - bitcoin_1_username=bitcoin
+      - bitcoin_1_password=bitcoin
+      - minerId_URL=http://minerid:9002/minerid
       - minerId_alias=testMiner
     ports:
-      - "9004:9004"
+      - "9014:9004"
     restart: unless-stopped
     depends_on:
-      - sv
+      - node1
+    networks:
+      - regtest_stack
 
   minerid:
     container_name: minerid
     image: bitcoinsv/minerid:1.1.1
     environment:
-      - NODE_CONFIG='{"bitcoin":{"rpcHost":"host.docker.internal"}}'
+      NODE_CONFIG: '{
+        "bitcoin": {
+        "rpcHost":"node1"
+        },
+        "network": "regtest"
+        }'
     ports:
-      - "9002:9002"
+      - "9012:9002"
+    restart: unless-stopped
     depends_on:
-      - sv
+      - node1
+    networks:
+      - regtest_stack
+    volumes:
+      - minerid:/root/.keystore
+      - minerid:/root/.minerid-client
+
+volumes:
+  minerid:
+    external: false
+
+networks:
+  regtest_stack:
