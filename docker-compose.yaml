@@ -56,7 +56,7 @@ services:
     container_name: mapi
     image: bitcoinsv/mapi:1.1.0
     environment:
-      - httpAddress=:9014
+      - httpAddress=:9004
       - bitcoin_1_host=node1
       - bitcoin_1_port=18332
       - bitcoin_1_username=bitcoin
@@ -64,7 +64,7 @@ services:
       - minerId_URL=http://host.docker.internal:9012/minerid
       - minerId_alias=testMiner
     ports:
-      - "9014"
+      - "9014:9004"
     restart: unless-stopped
     depends_on:
       - node1
@@ -77,7 +77,7 @@ services:
     environment:
       - NODE_CONFIG='{"bitcoin":{"rpcHost":"host.docker.internal"}}'
     ports:
-      - "9012"
+      - "9012:9002"
     depends_on:
       - node1
     networks:
