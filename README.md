@@ -50,3 +50,9 @@ The [API reference](https://github.com/bitcoin-sv/merchantapi-reference) has mor
 ### Miner ID
 
 [Miner ID reference](https://github.com/bitcoin-sv/minerid-reference) contains commands.
+
+To create a MinerId, run:
+
+```
+npm run cli -- generateminerid --name testMiner
+```
