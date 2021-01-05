@@ -17,8 +17,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
-    networks:
-      - regtest_stack
 
   explorer:
     container_name: explorer
@@ -32,8 +30,6 @@ services:
     restart: unless-stopped
     depends_on: 
       - node1
-    networks:
-      - regtest_stack
 
   dash:
     container_name: dash
@@ -49,8 +45,6 @@ services:
     restart: unless-stopped
     depends_on:
       - node1
-    networks:
-      - regtest_stack
 
   mapi:
     container_name: mapi
@@ -68,8 +62,6 @@ services:
     restart: unless-stopped
     depends_on:
       - node1
-    networks:
-      - regtest_stack
 
   minerid:
     container_name: minerid
@@ -86,8 +78,6 @@ services:
     restart: unless-stopped
     depends_on:
       - node1
-    networks:
-      - regtest_stack
     volumes:
       - minerid:/root/.keystore
       - minerid:/root/.minerid-client
@@ -95,6 +85,3 @@ services:
 volumes:
   minerid:
     external: false
-
-networks:
-  regtest_stack:
