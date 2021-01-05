@@ -12,8 +12,8 @@ services:
       - "18333"
       - "28332"
     ports:
-      - "18332"
-      - "28332"
+      - "18332:18332"
+      - "28332:28332"
     restart: unless-stopped
     volumes:
       - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
@@ -61,7 +61,7 @@ services:
       - bitcoin_1_port=18332
       - bitcoin_1_username=bitcoin
       - bitcoin_1_password=bitcoin
-      - minerId_URL=http://host.docker.internal:9012/minerid
+      - minerId_URL=http://minerid:9002/minerid
       - minerId_alias=testMiner
     ports:
       - "9014:9004"
@@ -75,14 +75,26 @@ services:
     container_name: minerid
     image: bitcoinsv/minerid:1.1.1
     environment:
-      - NODE_CONFIG='{"bitcoin":{"rpcHost":"host.docker.internal"}}'
+      NODE_CONFIG: '{
+        "bitcoin": {
+        "rpcHost":"node1"
+        },
+        "network": "regtest"
+        }'
     ports:
       - "9012:9002"
+    restart: unless-stopped
     depends_on:
       - node1
     networks:
       - regtest_stack
+    volumes:
+      - minerid:/root/.keystore
+      - minerid:/root/.minerid-client
+
+volumes:
+  minerid:
+    external: false
 
 networks:
   regtest_stack:
-    external: true
