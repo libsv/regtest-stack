@@ -143,5 +143,16 @@ app.get('/wallet', async (req, res) => {
   let balance = unspent.reduce((x, utxo) => x + utxo.amount, 0);
   res.render('wallet', { unspent, balance });
 });
+
+function autoMine () {
+  console.log('mining 1 block every 10 minutes')
+  setInterval(async () => {
+    await mine(1)
+    console.log('mined 1 block')
+  }, 10 * 60 * 1000)
+}
  
-app.listen(DASH_PORT, () => console.log('listening on', DASH_PORT));
+app.listen(DASH_PORT, () => {
+  console.log('listening on', DASH_PORT)
+  autoMine()
+});
