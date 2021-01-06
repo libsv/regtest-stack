@@ -49,15 +49,6 @@
     </script>
 </div>
 
-<div class="control">
-  <button id="mining-button">
-    <img src="/mining.svg" width="100" height="100" />
-    <br />
-    <span>Start mining</span>
-  </button>
-  <script>window.init(); const miningButton = document.getElementById('mining-button'); miningButton.click()</script>
-</div>
-
 {{#if data.blocks}}
 <form method="POST" action="/reset" class="control">
   <button>
