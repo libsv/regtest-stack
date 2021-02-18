@@ -6,7 +6,7 @@ services:
     build:
       context: ./sv
       args:
-        VERSION: "1.0.6"
+        VERSION: "1.0.7"
     expose:
       - "18332"
       - "18333"

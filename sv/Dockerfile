@@ -2,13 +2,13 @@ FROM ubuntu:18.04
 ARG VERSION
 ENV VERSION=$VERSION
 RUN apt update \
- && apt install curl tar -y \
- && rm -rf /var/lib/apt/lists/* \
- && mkdir -p /opt/bitcoin-sv/ \
- && cd /opt/bitcoin-sv \
- && curl -L "https://download.bitcoinsv.io/bitcoinsv/$VERSION/bitcoin-sv-$VERSION-x86_64-linux-gnu.tar.gz" -o /opt/bitcoin-sv/bsv.tar.gz \
- && tar -xvzf /opt/bitcoin-sv/bsv.tar.gz \
- && rm /opt/bitcoin-sv/bsv.tar.gz
+  && apt install wget tar libatomic1 -y \
+  && rm -rf /var/lib/apt/lists/* \
+  && mkdir -p /opt/bitcoin-sv/ \
+  && cd /opt/bitcoin-sv \
+  && wget -O /opt/bitcoin-sv/bsv.tar.gz "https://download.bitcoinsv.io/bitcoinsv/1.0.7/bitcoin-sv-1.0.7-x86_64-linux-gnu.tar.gz" \
+  && tar -xvzf /opt/bitcoin-sv/bsv.tar.gz \
+  && rm /opt/bitcoin-sv/bsv.tar.gz
 EXPOSE 8332/tcp
 EXPOSE 8333/tcp
 EXPOSE 28332/tcp
