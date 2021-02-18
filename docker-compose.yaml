@@ -3,10 +3,7 @@ version: '3.8'
 services:
   node1:
     container_name: node1
-    build:
-      context: ./sv
-      args:
-        VERSION: "1.0.6"
+    image: bitcoinsv/bitcoin-sv:1.0.7
     expose:
       - "18332"
       - "18333"
@@ -15,8 +12,10 @@ services:
       - "18332:18332"
       - "28332:28332"
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo" ]
     volumes:
-      - ./sv/bitcoin.conf:/root/.bitcoin/bitcoin.conf
+      - ./sv/bitcoin.conf:/data/bitcoin.conf
 
   explorer:
     container_name: explorer
