@@ -16,6 +16,7 @@ services:
       test: [ "CMD", "/entrypoint.sh", "bitcoin-cli", "getinfo" ]
     volumes:
       - ./sv/bitcoin.conf:/data/bitcoin.conf
+      - regtest-data:/data
 
   explorer:
     container_name: explorer
@@ -84,3 +85,4 @@ services:
 volumes:
   minerid:
     external: false
+  regtest-data:
