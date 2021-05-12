@@ -6,7 +6,7 @@ RUN apt update \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /opt/bitcoin-sv/ \
   && cd /opt/bitcoin-sv \
-  && wget -O /opt/bitcoin-sv/bsv.tar.gz "https://download.bitcoinsv.io/bitcoinsv/1.0.7/bitcoin-sv-1.0.7-x86_64-linux-gnu.tar.gz" \
+  && wget -O /opt/bitcoin-sv/bsv.tar.gz "https://download.bitcoinsv.io/bitcoinsv/1.0.8.beta/bitcoin-sv-1.0.8.beta-x86_64-linux-gnu.tar.gz" \
   && tar -xvzf /opt/bitcoin-sv/bsv.tar.gz \
   && rm /opt/bitcoin-sv/bsv.tar.gz
 EXPOSE 8332/tcp
