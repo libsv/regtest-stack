@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export VERSION="1.0.7"
+export VERSION="1.0.8"
 
 cd "${0%/*}"
 
