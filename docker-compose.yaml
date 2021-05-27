@@ -118,7 +118,7 @@ services:
     ports:
       - "8080:8080"
     restart: unless-stopped
-    depends_on: 
+    depends_on:
       - node1
 
   dash:
