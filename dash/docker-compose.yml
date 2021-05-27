@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  dashboard:
+    image: jwahab/regtest-dashboard:latest
+    build:
+      context: .

@@ -110,7 +110,7 @@ services:
 
   explorer:
     container_name: explorer
-    build: ./explorer
+    image: jwahab/woc-explorer:latest
     environment:
       PORT: "8080"
     expose:
@@ -123,7 +123,7 @@ services:
 
   dash:
     container_name: dash
-    build: ./dash
+    image: jwahab/regtest-dashboard:latest
     environment:
       DASH_PORT: 3000
       SV_HOST: node1
