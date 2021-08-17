@@ -17,6 +17,8 @@ services:
     volumes:
       - ./sv/bitcoin.conf:/data/bitcoin.conf
       - regtest-data:/data
+    networks:
+      - regtest-stack
 
   minerid:
     container_name: minerid
@@ -37,6 +39,8 @@ services:
       - minerid:/root/.keystore
       - minerid:/root/.minerid-client
     command: ["/bin/sh", "-c", "npm run cli -- generateminerid --name testMiner; npm start;"]
+    networks:
+      - regtest-stack
 
   mapi_db:
     container_name: mapi_db
@@ -47,6 +51,8 @@ services:
       - mapi-volume:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    networks:
+      - regtest-stack
 
   mapi:
     container_name: mapi
@@ -97,6 +103,8 @@ services:
       - node1
       - minerid
       - mapi_db
+    networks:
+      - regtest-stack
 
   mapi_add_node:
     container_name: mapi_add_node
@@ -107,6 +115,8 @@ services:
     restart: on-failure
     depends_on:
       - mapi
+    networks:
+      - regtest-stack
 
   explorer:
     container_name: explorer
@@ -120,6 +130,8 @@ services:
     restart: unless-stopped
     depends_on:
       - node1
+    networks:
+      - regtest-stack
 
   dash:
     container_name: dash
@@ -135,9 +147,15 @@ services:
     restart: unless-stopped
     depends_on:
       - node1
+    networks:
+      - regtest-stack
 
 volumes:
   minerid:
     external: false
   regtest-data:
   mapi-volume:
+
+networks:
+  regtest-stack:
+    name: regtest-stack
