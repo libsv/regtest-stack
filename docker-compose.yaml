@@ -42,6 +42,26 @@ services:
     networks:
       - regtest-stack
 
+  headersv:
+    image: bitcoinsv/block-headers-client:1.0.2
+    container_name: headersv
+    volumes:
+      - headersv-data:/tmp/jcl
+    environment:
+      - SPRING_PROFILES_ACTIVE=bsv-regtest
+      - HEADERSV_NETWORK_MINPEERS=1
+      - HEADERSV_NETWORK_MAXPEERS=5
+      - HEADERSV_NETWORK_PEERS=node1
+      - HEADERSV_NETWORK_PORT=18333
+      - _JAVA_OPTIONS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=75 -Dlogging.level.ROOT=DEBUG
+    ports:
+      - 8001:8080
+    depends_on:
+      - node1
+    networks:
+      - regtest-stack
+
+
   mapi_db:
     container_name: mapi_db
     image: postgres:12
@@ -199,6 +219,7 @@ volumes:
   regtest-data:
   mapi-volume:
   peerchannels-volume:
+  headersv-data:
 
 networks:
   regtest-stack:
