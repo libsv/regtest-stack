@@ -2,10 +2,10 @@ SHELL=/bin/bash
 
 # run with the latest production images
 run-production:
-	@docker-compose -f docker-compose.yml up --force-recreate
+	@docker-compose -f docker-compose.yaml up --force-recreate
 
 run-productiond:
-	@docker-compose -f docker-compose.yml up -d --force-recreate
+	@docker-compose -f docker-compose.yaml up -d --force-recreate
 
 # stop development without clearing volumes etc
 stop:
