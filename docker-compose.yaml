@@ -3,7 +3,7 @@ version: '3.8'
 services:
   node1:
     container_name: node1
-    image: bitcoinsv/bitcoin-sv:1.0.8
+    image: bitcoinsv/bitcoin-sv:1.0.11
     expose:
       - "18332"
       - "18333"

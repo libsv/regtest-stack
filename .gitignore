@@ -48,3 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
+# VS code history tracket
+.history
